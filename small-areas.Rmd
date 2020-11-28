@@ -7,7 +7,9 @@ library(httr)
 library(sf)
 ````
 
+The UK is carved into a range of small areas --- different kinds of **Output Area** and **wards** --- each of which have a variety of datasets associated with them, including population estimates, rural-urban classifications, the Index of Multiple Deprivation, and the British Red Cross Vulnerability Index.
 
+The various Output Areas are known as **statistical geographies** - they don't necessarily represent what their residents would consider a meaningful neighbourhood or community. Instead, they were created for the Census with the intention of containing roughly the same numbers of people.
 
 ## Output Areas (OAs)
 
