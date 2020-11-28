@@ -1,0 +1,13 @@
+eq:mc2
+fig:fig1
+tab:tab1
+materials-and-methods
+preparation
+installation
+generate-demo-files
+build-a-demo-book
+write-your-own
+more-outputs
+recommendations
+models
+results-and-discussions

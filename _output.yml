@@ -1,0 +1,10 @@
+bookdown::word_document2: default 
+bookdown::epub_book: default
+bookdown::html_document2: default
+bookdown::gitbook:
+  css: style/gitbook.css
+  config:
+    toc:
+      collapse: none
+      after: |
+        <li><a href="https://bookdown.org/baydap/bookdownplus/" target="blank">Supported by bookdownplus</a></li>
