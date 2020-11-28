@@ -1,0 +1,79 @@
+# Neighbourhoods and other small areas
+
+```{r packages, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(httr)
+library(sf)
+````
+
+
+
+## Output Areas (OAs)
+
+
+## Lower Layer Super Output Areas (LSOAs)
+
+The next level up is called **Lower Layer Super Output Area** in England and Wales, **Data Zone** in Scotland, and **Super Output Area** in Northern Ireland.
+
+```{r load_lsoa_data include=FALSE}
+# Lower Layer Super Output Areas (December 2011) EW BGC V2
+# Source: https://geoportal.statistics.gov.uk/datasets/lower-layer-super-output-areas-december-2011-ew-bgc-v2/data
+lsoa_bounds <- read_sf("https://opendata.arcgis.com/datasets/42f3aa4ca58742e8a55064a213fb27c9_0.geojson")
+
+# Lower layer Super Output Area population estimates
+# Source: https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates
+GET("https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2flowersuperoutputareamidyearpopulationestimates%2fmid2019sape22dt2/sape22dt2mid2019lsoasyoaestimatesunformatted.zip",
+    write_disk(tf <- tempfile(fileext = ".zip")))
+
+unzip(tf, exdir = "data/population")
+unlink(tf); rm(tf)
+
+lsoa_pop <- read_excel("data/population/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx", sheet = "Mid-2019 Persons", skip = 4)
+````
+
+There are `r scales::comma(nrow(lsoa_pop))` LSOAs in England and Wales. LSOAs contain on average `r scales::comma(median(lsoa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(lsoa_pop$`All Ages`))` up to `r scales::comma(max(lsoa_pop$`All Ages`))` people.
+
+````{r lsoa_pop_hist}
+lsoa_pop %>% 
+  ggplot(aes(x = `All Ages`)) +
+  geom_histogram(binwidth = 100) +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Number of people", y = "Numbe of LSOAs") +
+  theme_classic()
+````
+
+LSOAs vary significantly in geographical size, the smallest being `r subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
+
+### Deprivation and rural-urban classifications
+
+The **Index of Multiple Deprivation** and **rural-urban classifications** are calculated for LSOAs (and their devolved equivalents). Most rural areas tend to be towards the least-deprived end:
+
+````{r load_imd}
+lsoa_imd <- read_csv("https://github.com/matthewgthomas/IMD/raw/master/data/UK%20IMD%20domains.csv")
+````
+
+````{r plot_imd}
+lsoa_imd %>% 
+  ggplot(aes(x = factor(IMD_decile), fill = RUC)) +
+  geom_histogram(stat = "count") +
+  
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Deprivation decile\n(1 = most deprived)", y = "Number of LSOAs") +
+  theme_classic()
+  
+````
+
+## Middle Layer Super Output Areas (MSOAs)
+The final kind of Output Area is the MSOA (in England and Wales), also called **Intermediate Zones** in Scotland. There is no equivalent in Northern Ireland.
+
+### Vulnerability
+The British Red Cross's Vulnerability Index is calculated for MSOAs (and their devolved equivalents).
+
+
+## Wards
+
+### Community Needs Index
+OCSI's Community Needs Index is calculated for wards.
+
