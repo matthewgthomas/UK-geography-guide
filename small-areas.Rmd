@@ -2,9 +2,6 @@
 
 ```{r packages, message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
-library(readxl)
-library(httr)
-library(sf)
 ````
 
 The UK is carved into a range of small areas --- different kinds of **Output Area** and **wards** --- each of which have a variety of datasets associated with them, including population estimates, rural-urban classifications, the Index of Multiple Deprivation, and the British Red Cross Vulnerability Index.
@@ -13,12 +10,32 @@ The various Output Areas are known as **statistical geographies** - they don't n
 
 ## Output Areas (OAs)
 
+````{r load_oa_data}
+oa_bounds <- read_rds("data/boundaries/oa_bounds.rds")
+oa_pop <- read_rds("data/population/oa_pop.rds")
+````
+
+Output Areas (known as Small Areas in Northern Ireland) are the smallest of the Census statistical geographies.
+
+There are `r scales::comma(nrow(oa_pop))` OAs in England and Wales. OAs contain on average `r scales::comma(median(oa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(oa_pop$`All Ages`))` up to `r scales::comma(max(oa_pop$`All Ages`))` people.
+
+````{r lsoa_pop_hist}
+oa_pop %>% 
+  ggplot(aes(x = `All Ages`)) +
+  geom_histogram(binwidth = 100) +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Number of people", y = "Numbe of Output Areas") +
+  theme_classic()
+````
+
+OAs vary significantly in geographical size, the smallest being `r subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
 
 ## Lower Layer Super Output Areas (LSOAs)
 
 The next level up is called **Lower Layer Super Output Area** in England and Wales, **Data Zone** in Scotland, and **Super Output Area** in Northern Ireland.
 
-```{r load_lsoa_data include=FALSE}
+```{r load_lsoa_data, include=FALSE}
 lsoa_bounds <- read_rds("data/boundaries/lsoa_bounds.rds")
 lsoa_pop <- read_rds("data/population/lsoa_pop.rds")
 ````
@@ -59,9 +76,27 @@ lsoa_imd %>%
 ## Middle Layer Super Output Areas (MSOAs)
 The final kind of Output Area is the MSOA (in England and Wales), also called **Intermediate Zones** in Scotland. There is no equivalent in Northern Ireland.
 
+````{r load_msoa_data}
+msoa_bounds <- read_rds("data/boundaries/msoa_bounds.rds")
+msoa_pop <- read_rds("data/population/msoa_pop.rds")
+````
+
+There are `r scales::comma(nrow(msoa_pop))` MSOAs in England and Wales. MSOAs contain on average `r scales::comma(median(msoa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(msoa_pop$`All Ages`))` up to `r scales::comma(max(msoa_pop$`All Ages`))` people.
+
+````{r msoa_pop_hist}
+msoa_pop %>% 
+  ggplot(aes(x = `All Ages`)) +
+  geom_histogram(binwidth = 100) +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Number of people", y = "Numbe of MSOAs") +
+  theme_classic()
+````
+
+MSOAs vary significantly in geographical size, the smallest being `r subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
+
 ### Vulnerability
 The British Red Cross's Vulnerability Index is calculated for MSOAs (and their devolved equivalents).
-
 
 ## Wards
 
