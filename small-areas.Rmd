@@ -19,19 +19,8 @@ The various Output Areas are known as **statistical geographies** - they don't n
 The next level up is called **Lower Layer Super Output Area** in England and Wales, **Data Zone** in Scotland, and **Super Output Area** in Northern Ireland.
 
 ```{r load_lsoa_data include=FALSE}
-# Lower Layer Super Output Areas (December 2011) EW BGC V2
-# Source: https://geoportal.statistics.gov.uk/datasets/lower-layer-super-output-areas-december-2011-ew-bgc-v2/data
-lsoa_bounds <- read_sf("https://opendata.arcgis.com/datasets/42f3aa4ca58742e8a55064a213fb27c9_0.geojson")
-
-# Lower layer Super Output Area population estimates
-# Source: https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates
-GET("https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2flowersuperoutputareamidyearpopulationestimates%2fmid2019sape22dt2/sape22dt2mid2019lsoasyoaestimatesunformatted.zip",
-    write_disk(tf <- tempfile(fileext = ".zip")))
-
-unzip(tf, exdir = "data/population")
-unlink(tf); rm(tf)
-
-lsoa_pop <- read_excel("data/population/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx", sheet = "Mid-2019 Persons", skip = 4)
+lsoa_bounds <- read_rds("data/boundaries/lsoa_bounds.rds")
+lsoa_pop <- read_rds("data/population/lsoa_pop.rds")
 ````
 
 There are `r scales::comma(nrow(lsoa_pop))` LSOAs in England and Wales. LSOAs contain on average `r scales::comma(median(lsoa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(lsoa_pop$`All Ages`))` up to `r scales::comma(max(lsoa_pop$`All Ages`))` people.
