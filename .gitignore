@@ -41,8 +41,8 @@ vignettes/*.pdf
 data/
 
 # don't push local rendered files in master branch
-_book/
-_bookdown_files/
-libs/
-**/*.bib
-**/*.html
+# _book/
+# _bookdown_files/
+# libs/
+# **/*.bib
+# **/*.html
