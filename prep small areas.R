@@ -81,7 +81,9 @@ for (file in pop_files) {
   }
 }
 
-write_rds(oa_pop, "data/population/oa_pop.rds")
+oa_pop %>% 
+  rename(n = `All Ages`) %>% 
+  write_rds("data/population/oa_pop.rds")
 
 # ---- Lower Layer Super Output Areas ----
 # - Boundaries -
@@ -102,7 +104,7 @@ unlink(tf); rm(tf)
 lsoa_pop <- read_excel("data/population/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx", sheet = "Mid-2019 Persons", skip = 4)
 
 lsoa_pop %>% 
-  select(LSOA11CD = `LSOA Code`, `All Ages`) %>% 
+  select(LSOA11CD = `LSOA Code`, n = `All Ages`) %>% 
   write_rds("data/population/lsoa_pop.rds")
 
 # ---- Middle Layer Super Output Areas ----
@@ -125,6 +127,5 @@ msoa_pop <- read_excel("data/population/SAPE21DT3a-mid-2018-msoa-on-2019-LA-syoa
 
 msoa_pop %>% 
   filter(!is.na(MSOA)) %>%  # drop Local Authorities
-  select(MSOA11CD = `Area Codes`, `All Ages`) %>% 
+  select(MSOA11CD = `Area Codes`, n = `All Ages`) %>% 
   write_rds("data/population/msoa_pop.rds")
-

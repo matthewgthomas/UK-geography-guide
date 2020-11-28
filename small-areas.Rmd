@@ -17,11 +17,11 @@ oa_pop <- read_rds("data/population/oa_pop.rds")
 
 Output Areas (known as Small Areas in Northern Ireland) are the smallest of the Census statistical geographies.
 
-There are `r scales::comma(nrow(oa_pop))` OAs in England and Wales. OAs contain on average `r scales::comma(median(oa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(oa_pop$`All Ages`))` up to `r scales::comma(max(oa_pop$`All Ages`))` people.
+There are `r scales::comma(nrow(oa_pop))` OAs in England and Wales. OAs contain on average `r scales::comma(median(oa_pop$n))` people, although this ranges from `r scales::comma(min(oa_pop$n))` up to `r scales::comma(max(oa_pop$n))` people.
 
 ````{r oa_pop_hist, echo=FALSE}
 oa_pop %>% 
-  ggplot(aes(x = `All Ages`)) +
+  ggplot(aes(x = n)) +
   geom_histogram(binwidth = 100) +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma) +
@@ -29,7 +29,7 @@ oa_pop %>%
   theme_classic()
 ````
 
-OAs vary significantly in geographical size, the smallest being `r subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
+OAs vary significantly in geographical size, the smallest being `r subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$LSOA11NM` (`r round(subset(oa_bounds, Shape__Area == min(oa_bounds$Shape__Area))$Shape__Area / 1000, 2)`km^2) and the largest being `r subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(oa_bounds, Shape__Area == max(oa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
 
 ## Lower Layer Super Output Areas (LSOAs)
 
@@ -40,11 +40,11 @@ lsoa_bounds <- read_rds("data/boundaries/lsoa_bounds.rds")
 lsoa_pop <- read_rds("data/population/lsoa_pop.rds")
 ````
 
-There are `r scales::comma(nrow(lsoa_pop))` LSOAs in England and Wales. LSOAs contain on average `r scales::comma(median(lsoa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(lsoa_pop$`All Ages`))` up to `r scales::comma(max(lsoa_pop$`All Ages`))` people.
+There are `r scales::comma(nrow(lsoa_pop))` LSOAs in England and Wales. LSOAs contain on average `r scales::comma(median(lsoa_pop$n))` people, although this ranges from `r scales::comma(min(lsoa_pop$n))` up to `r scales::comma(max(lsoa_pop$n))` people.
 
 ````{r lsoa_pop_hist, echo=FALSE}
 lsoa_pop %>% 
-  ggplot(aes(x = `All Ages`)) +
+  ggplot(aes(x = n)) +
   geom_histogram(binwidth = 100) +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma) +
@@ -62,7 +62,7 @@ The **Index of Multiple Deprivation** and **rural-urban classifications** are ca
 lsoa_imd <- read_csv("https://github.com/matthewgthomas/IMD/raw/master/data/UK%20IMD%20domains.csv")
 ````
 
-````{r plot_imd, echo=FALSE}
+````{r plot_imd, echo=FALSE, message=FALSE}
 lsoa_imd %>% 
   ggplot(aes(x = factor(IMD_decile), fill = RUC)) +
   geom_histogram(stat = "count") +
@@ -70,7 +70,6 @@ lsoa_imd %>%
   scale_y_continuous(labels = scales::comma) +
   labs(x = "Deprivation decile\n(1 = most deprived)", y = "Number of LSOAs") +
   theme_classic()
-  
 ````
 
 ## Middle Layer Super Output Areas (MSOAs)
@@ -81,11 +80,11 @@ msoa_bounds <- read_rds("data/boundaries/msoa_bounds.rds")
 msoa_pop <- read_rds("data/population/msoa_pop.rds")
 ````
 
-There are `r scales::comma(nrow(msoa_pop))` MSOAs in England and Wales. MSOAs contain on average `r scales::comma(median(msoa_pop$`All Ages`))` people, although this ranges from `r scales::comma(min(msoa_pop$`All Ages`))` up to `r scales::comma(max(msoa_pop$`All Ages`))` people.
+There are `r scales::comma(nrow(msoa_pop))` MSOAs in England and Wales. MSOAs contain on average `r scales::comma(median(msoa_pop$n))` people, although this ranges from `r scales::comma(min(msoa_pop$n))` up to `r scales::comma(max(msoa_pop$n))` people.
 
 ````{r msoa_pop_hist, echo=FALSE}
 msoa_pop %>% 
-  ggplot(aes(x = `All Ages`)) +
+  ggplot(aes(x = n)) +
   geom_histogram(binwidth = 100) +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma) +
