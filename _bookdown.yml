@@ -1,1 +1,6 @@
-book_filename: uk-geography
+book_filename: uk-geography-guide
+rmd_files:
+  - "index.Rmd"
+  - "small-areas.Rmd"
+  - "health-geogs.Rmd"
+  - "brc-geogs.Rmd"

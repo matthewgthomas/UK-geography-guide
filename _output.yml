@@ -1,4 +1,3 @@
-bookdown::html_document2: default
 bookdown::gitbook:
   css: style/gitbook.css
   config:
