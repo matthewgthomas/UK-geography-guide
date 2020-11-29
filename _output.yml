@@ -1,5 +1,9 @@
+
 bookdown::gitbook:
-  css: style/gitbook.css
+  # css: style/gitbook.css
+  css: style.css
+  includes:
+    in_header: ./header.html
   config:
     toc:
       collapse: none
