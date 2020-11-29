@@ -2,6 +2,8 @@
 
 ```{r load_packages, include=FALSE}
 library(tidyverse)
+library(leaflet)
+library(sf)
 ````
 
 The UK is carved into a range of small areas --- different kinds of **Output Area** and **wards** --- each of which have a variety of datasets associated with them, including population estimates, rural-urban classifications, the Index of Multiple Deprivation, and the British Red Cross Vulnerability Index.
@@ -52,7 +54,31 @@ lsoa_pop %>%
   theme_classic()
 ````
 
-LSOAs vary significantly in geographical size, the smallest being `r subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
+
+### Physical sizes of LSOAs {.tabset .tabset-fade}
+
+```{r lsoa_sizes, include=FALSE}
+smallest_lsoa <- subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))
+largest_lsoa  <- subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))
+```
+
+LSOAs vary significantly in geographical size, the smallest being `r subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(lsoa_pop, LSOA11CD == smallest_lsoa$LSOA11CD)$n)` people) and the largest being `r subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(lsoa_pop, LSOA11CD == largest_lsoa$LSOA11CD)$n)` people).
+
+#### Smallest LSOA
+
+````{r lsoa_map_smallest, echo=FALSE}
+leaflet(smallest_lsoa) %>% 
+  addTiles() %>% 
+  addPolygons(label = ~LSOA11NM, labelOptions = labelOptions(noHide = TRUE))
+````
+
+#### Largest LSOA
+
+````{r lsoa_map_largest, echo=FALSE}
+leaflet(largest_lsoa) %>% 
+  addTiles() %>% 
+  addPolygons(label = ~LSOA11NM, labelOptions = labelOptions(noHide = TRUE))
+````
 
 ### Deprivation and rural-urban classifications
 
