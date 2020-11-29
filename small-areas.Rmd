@@ -64,21 +64,20 @@ largest_lsoa  <- subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area)
 
 LSOAs vary significantly in geographical size, the smallest being `r subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == min(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(lsoa_pop, LSOA11CD == smallest_lsoa$LSOA11CD)$n)` people) and the largest being `r subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(lsoa_bounds, Shape__Area == max(lsoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(lsoa_pop, LSOA11CD == largest_lsoa$LSOA11CD)$n)` people).
 
-#### Smallest LSOA
+#### Smallest LSOA {-}
 
-````{r lsoa_map_smallest, echo=FALSE}
+```{r lsoa_map_smallest, echo=FALSE}
 leaflet(smallest_lsoa) %>% 
   addTiles() %>% 
   addPolygons(label = ~LSOA11NM, labelOptions = labelOptions(noHide = TRUE))
-````
+```
 
-#### Largest LSOA
-
-````{r lsoa_map_largest, echo=FALSE}
+#### Largest LSOA {-}
+```{r lsoa_map_largest, echo=FALSE}
 leaflet(largest_lsoa) %>% 
   addTiles() %>% 
   addPolygons(label = ~LSOA11NM, labelOptions = labelOptions(noHide = TRUE))
-````
+```
 
 ### Deprivation and rural-urban classifications
 
