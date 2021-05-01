@@ -1,7 +1,7 @@
 --- 
 title: "A Guide to UK Geography"
 short_title: "UK Geography Guide"
-author: "Matthew Gwynfryn THomas"
+author: "Matthew Gwynfryn Thomas"
 date: '`r Sys.Date()`'
 knit: bookdown::render_book
 site: bookdown::bookdown_site
