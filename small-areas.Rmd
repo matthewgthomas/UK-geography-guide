@@ -119,6 +119,30 @@ msoa_pop %>%
 
 MSOAs vary significantly in geographical size, the smallest being `r subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2) and the largest being `r subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$LSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2).
 
+### Physical sizes of MSOAs
+
+```{r msoa_sizes, include=FALSE}
+smallest_msoa <- subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))
+largest_msoa  <- subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))
+```
+
+MSOAs vary significantly in geographical size, the smallest being `r subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$MSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == min(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(msoa_pop, MSOA11CD == smallest_msoa$MSOA11CD)$n)` people) and the largest being `r subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$MSOA11NM` (`r scales::comma(subset(msoa_bounds, Shape__Area == max(msoa_bounds$Shape__Area))$Shape__Area / 1000)`km^2, with a population of `r scales::comma(subset(msoa_pop, MSOA11CD == largest_msoa$MSOA11CD)$n)` people).
+
+#### Smallest MSOA {-}
+
+```{r msoa_map_smallest, echo=FALSE}
+leaflet(smallest_msoa) %>% 
+  addTiles() %>% 
+  addPolygons(label = ~MSOA11NM, labelOptions = labelOptions(noHide = TRUE))
+```
+
+#### Largest MSOA {-}
+```{r msoa_map_largest, echo=FALSE}
+leaflet(largest_msoa) %>% 
+  addTiles() %>% 
+  addPolygons(label = ~MSOA11NM, labelOptions = labelOptions(noHide = TRUE))
+```
+
 ### Vulnerability
 The British Red Cross's Vulnerability Index is calculated for MSOAs (and their devolved equivalents).
 

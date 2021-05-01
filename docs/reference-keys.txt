@@ -2,10 +2,9 @@ neighbourhoods-and-other-small-areas
 output-areas-oas
 lower-layer-super-output-areas-lsoas
 physical-sizes-of-lsoas
-smallest-lsoa
-largest-lsoa
 deprivation-and-rural-urban-classifications
 middle-layer-super-output-areas-msoas
+physical-sizes-of-msoas
 vulnerability
 wards
 community-needs-index
